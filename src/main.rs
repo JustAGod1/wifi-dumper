@@ -1,4 +1,6 @@
 use std::net::Ipv4Addr;
+use std::thread::sleep;
+use std::time::Duration;
 use crate::router::{KeeneticRouterInterface, RouterInterface};
 use redis::{Client as RedisClient, Commands};
 
@@ -21,6 +23,8 @@ fn main() {
         if result.is_err() {
             println!("{}", result.unwrap_err());
         }
+
+        sleep(Duration::from_millis(5000))
     }
 }
 
