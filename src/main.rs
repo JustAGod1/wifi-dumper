@@ -36,12 +36,14 @@ fn run(keenetic: &KeeneticRouterInterface) -> Result<(), String> {
     let mut redis = redis
         .map_err(|a| format!("Cannot connect to redis {}", a.to_string()))?;
 
+    redis::cmd("MULTI").query(&mut redis).map_err(|a| a.to_string())?;
     let _: () = redis.del(KEY).map_err(|a| a.to_string())?;
 
     for x in result {
         redis.sadd(KEY, x).map_err(|a| a.to_string())?;
 
     }
+    redis::cmd("EXEC").query(&mut redis).map_err(|a| a.to_string())?;
 
 
     Ok(())
